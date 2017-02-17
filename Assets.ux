@@ -1,0 +1,44 @@
+<Panel ux:Class="Assets">
+  <Image StretchMode="PixelPrecise" ux:Class="smsIcon" Margin="0,0,0,20">
+    <MultiDensityImageSource>
+      <FileImageSource Density="1" File="images/sms.png" />
+      <FileImageSource Density="2" File="images/sms@2x.png" />
+      <FileImageSource Density="3" File="images/sms@3x.png" />
+    </MultiDensityImageSource>
+  </Image>
+
+  <Image StretchMode="PixelPrecise" ux:Class="checkedIcon">
+    <MultiDensityImageSource>
+      <FileImageSource Density="1" File="images/checked.png" />
+      <FileImageSource Density="2" File="images/checked@2x.png" />
+      <FileImageSource Density="3" File="images/checked@3x.png" />
+    </MultiDensityImageSource>
+  </Image>
+
+  <Text ux:Class="Title" FontSize="18" Color="#9B9B9B" Alignment="Center" Margin="0,0,0,20" />
+  <Text ux:Class="Normal" FontSize="16" Color="#9B9B9B" TextAlignment="Center" Alignment="Center" Margin="0,0,0,20" TextWrapping="Wrap" />
+  <Text ux:Class="Label" FontSize="16" Color="#9B9B9B" TextAlignment="Center" Alignment="Center" Margin="0,0,0,20" TextWrapping="Wrap" />
+
+  <Rectangle ux:Class="PrimaryBtn" CornerRadius="5" Height="44">
+    <Stroke Offset="0" Width="2" Color="#F33052" />
+    <string ux:Property="Label" />
+    <Text ux:Name="BtnLabel" Value="{ReadProperty Label}" TextAlignment="Center" Alignment="VerticalCenter" Color="#F33052" />
+    <WhilePressed>
+        <Change this.Color="#F33052" Duration="0.05" DurationBack=".2" />
+        <Change BtnLabel.Color="#FFFFFF" Duration="0.05" DurationBack=".2" />
+    </WhilePressed>
+  </Rectangle>
+
+  <Panel ux:Class="DigitPlaceholder" StrokeColor="#979797">
+      <float4 ux:Property="StrokeColor" />
+      <string ux:Property="digitValue" />
+      <Text Alignment="Center" Value="{ReadProperty digitValue}" FontSize="32" />
+      <WhileString Value="{ReadProperty digitValue}" Equals="" Invert="true">
+          <Change stroke.Color="#F33052" Duration="0.2" />
+      </WhileString>
+      <Rectangle Color="#FAFAFA" CornerRadius="5" Width="48" Height="48">
+        <Stroke Width="1" Color="{Property StrokeColor}" ux:Name="stroke" />
+      </Rectangle>
+  </Panel>
+
+</Panel>
