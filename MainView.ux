@@ -13,7 +13,7 @@
         <StackPanel ux:Name="userNumber">
           <Label>Please type your phone number:</Label>
           <Grid Columns="1*,90">
-            <TextBox Value="{phoneNumber}" Padding="15,0" />
+            <TextBox Value="{phoneNumber}" Padding="15,0" InputHint="Phone" />
             <PrimaryBtn Width="80" Margin="10,0,0,0" Label="Go" Clicked="{sendSMS}">
             </PrimaryBtn>
           </Grid>

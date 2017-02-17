@@ -51,7 +51,7 @@ var isCodeValid = codeNumber.map(function(value) {
 var authorizationBasic = Base64.encodeAscii(twilioSID + ':' + twilioToken)
 
 function sendSMS() {
-  /*
+
   fetch('https://api.twilio.com/2010-04-01/Accounts/' + twilioSID + '/Messages.json', {
     method: 'POST',
     headers: { "Content-type": "application/x-www-form-urlencoded; charset=UTF-8", 'Authorization': 'Basic ' + authorizationBasic, 'Accept': 'application/json'},
@@ -65,8 +65,8 @@ function sendSMS() {
   }).catch(function(err) {
     // An error occurred somewhere in the Promise chain
   });
-  */
-  codeSent.value = true;
+
+  //codeSent.value = true;
   console.log(randomCode);
 }
 
