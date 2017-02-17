@@ -1,22 +1,83 @@
-<App>
+<App Background="#f3f3f3">
   <JavaScript File="authentication.js" />
-  <ClientPanel>
-    <StackPanel ux:Name="userNumber">
-      <Text>Telephone</Text>
-      <TextBox Value="{phoneNumber}" />
-      <Button Text="Send" Clicked="{sendSMS}" />
-    </StackPanel>
-    <StackPanel ux:Name="userCode" Visibility="Collapsed">
-      <Text>Code</Text>
-      <TextBox Value="{codeNumber}" />
-      <Text ux:Name="yesCode" Visibility="Collapsed">YES</Text>
-    </StackPanel>
-    <WhileTrue Value="{codeSent}">
-      <Set userCode.Visibility="Visible" />
-      <Set userNumber.Visibility="Collapsed" />
+  <DockPanel>
+    <StatusBarBackground Dock="Top" />
+    <Grid Rows="1*,auto,1*">
+      <StackPanel Alignment="VerticalCenter" Padding="20,0">
+        <smsIcon />
+        <Title>Welcome to Authenticate!</Title>
+        <Normal>This is a demonstration to authenticate a user through an SMS code</Normal>
+      </StackPanel>
+      <Panel ux:Name="MiddlePanel">
+        <Grid Width="200%" ColumnCount="2" ux:Name="GridCode" Alignment="Left" CellSpacing="40" Padding="20,0">
+        <StackPanel ux:Name="userNumber">
+          <Label>Please type your phone number:</Label>
+          <Grid Columns="1*,90">
+            <TextBox Value="{phoneNumber}" Padding="15,0" />
+            <PrimaryBtn Width="80" Margin="10,0,0,0" Label="Go" Clicked="{sendSMS}">
+            </PrimaryBtn>
+          </Grid>
+        </StackPanel>
+        <StackPanel ux:Name="userCode" Padding="20,0">
+          <Label>Please, type the code you received:</Label>
+          <Panel>
+            <Grid ColumnCount="4" Height="60" CellSpacing="8">
+                <DigitPlaceholder ux:Name="digitOne" digitValue="{digitOne}" />
+                <DigitPlaceholder ux:Name="digitTwo" digitValue="{digitTwo}" />
+                <DigitPlaceholder ux:Name="digitThree" digitValue="{digitThree}" />
+                <DigitPlaceholder ux:Name="digitFour" digitValue="{digitFour}" />
+                <WhileTrue Value="{isErrorCode}">
+                  <Move RelativeTo="Size">
+                      <Keyframe X="0.05" TimeDelta="0.05" />
+                      <Keyframe X="-0.05" TimeDelta="0.05"/>
+                      <Keyframe X="0.05" TimeDelta="0.05"/>
+                      <Keyframe X="0" TimeDelta="0.05"/>
+                  </Move>
+                  <!-- Set a Backward Animation to nothing so there's no "rebound" animation when is False again -->
+                  <TriggerAnimation ux:Binding="BackwardAnimation" />
+                </WhileTrue>
+            </Grid>
+            <TextBox ux:Name="invisibleInput" Value="{codeNumber}" Height="48" Visibility="Hidden" InputHint="Phone" MaxLength="4">
+              <WhileFocused>
+                <Change digitOne.StrokeColor="#F33052" Duration="0.3" />
+              </WhileFocused>
+            </TextBox>
+            <Tapped>
+              <GiveFocus Target="invisibleInput" />
+            </Tapped>
+          </Panel>
+
+        </StackPanel>
+        </Grid>
+        <checkedIcon ux:Name="checkedIcon" Opacity="0" />
+        <WhileTrue ux:Name="codeValid">
+          <Change checkedIcon.Opacity="1" Duration=".25" />
+          <Scale Factor=".5" Duration=".25" Easing="CircularOut" EasingBack="CircularIn" Target="checkedIcon" />
+          <Scale Factor="2" Duration=".25" Delay=".25" Easing="BounceOut" EasingBack="BounceIn" Target="checkedIcon" />
+        </WhileTrue>
+      </Panel>
+      <Panel ux:Name="LastPanel">
+        <StackPanel ux:Name="SendCodeAgain" Opacity="0" Alignment="VerticalCenter" Padding="20,0">
+          <Label>You didn't get the code?</Label>
+          <PrimaryBtn Label="Send Code Again" />
+        </StackPanel>
+        <StackPanel ux:Name="FinalImplementation" Opacity="0" Alignment="VerticalCenter" Padding="20,0">
+          <Label>Now in this step you should save the user with the number you just authenticate in your DB</Label>
+        </StackPanel>
+      </Panel>
+    </Grid>
+    <WhileTrue ux:Name="codeSent" Value="{codeSent}">
+      <Move X="-0.5" Duration="0.3" Easing="QuadraticInOut" Target="GridCode" RelativeTo="Size" />
+      <Change SendCodeAgain.Opacity="1" Duration="0.3" />
     </WhileTrue>
     <WhileTrue Value="{isCodeValid}">
-      <Set yesCode.Visibility="Visible" />
+      <Set GridCode.Visibility="Collapsed" />
+      <Set codeValid.Value="true" />
+      <Set codeSent.Value="false" />
+      <Change FinalImplementation.Opacity="1" Duration="0.3" Delay="0.3" />
+      <Set SendCodeAgain.Visibility="Collapsed" Delay="0.3" />
+      <ReleaseFocus TargetNode="invisibleInput" />
     </WhileTrue>
-  </ClientPanel>
+    <BottomBarBackground IncludesKeyboard="false" />
+  </DockPanel>
 </App>
