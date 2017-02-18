@@ -1,5 +1,29 @@
 <App Background="#f3f3f3">
   <JavaScript File="authentication.js" />
+
+  <WhileTrue ux:Name="DialogAppear">
+    <Change AgainDialog.Visibility="Visible" />
+    <Change DialogBG.Opacity="0.7" Duration="0.1" />
+    <Scale Factor=".5" Target="Dialog" />
+    <Scale Factor="2" Duration=".25" Easing="ElasticOut" Target="Dialog" />
+  </WhileTrue>
+  <Panel ux:Name="AgainDialog" Visibility="Collapsed">
+    <Rectangle Color="#fff" CornerRadius="5" Margin="40,0" Padding="0,30,0,0" Alignment="VerticalCenter" ux:Name="Dialog">
+      <StackPanel>
+        <Text Alignment="VerticalCenter" TextAlignment="Center" Margin="0,0,0,20">Code Sent!</Text>
+        <Rectangle Height="1" Color="#ccc" />
+        <Panel HitTestMode="LocalBounds" Height="40" ux:Name="OkBtn">
+          <WhilePressed>
+            <Change OkBtn.Color="#999" Duration="0.05" DurationBack=".2" />
+            <Set DialogAppear.Value="false" />
+          </WhilePressed>
+          <Text TextAlignment="Center" Alignment="VerticalCenter">OK</Text>
+        </Panel>
+      </StackPanel>
+    </Rectangle>
+    <Rectangle Color="#000" Opacity="0" ux:Name="DialogBG" />
+  </Panel>
+
   <DockPanel>
     <StatusBarBackground Dock="Top" />
     <Grid Rows="1*,auto,1*">
@@ -59,7 +83,12 @@
       <Panel ux:Name="LastPanel">
         <StackPanel ux:Name="SendCodeAgain" Opacity="0" Alignment="VerticalCenter" Padding="20,0">
           <Label>You didn't get the code?</Label>
-          <PrimaryBtn Label="Send Code Again" />
+          <PrimaryBtn Label="Send Code Again">
+            <Clicked>
+              <Callback Handler="{sendSMS}" />
+              <Set DialogAppear.Value="true" />
+            </Clicked>
+          </PrimaryBtn>
         </StackPanel>
         <StackPanel ux:Name="FinalImplementation" Opacity="0" Alignment="VerticalCenter" Padding="20,0">
           <Label>Now in this step you should save the user with the number you just authenticate in your DB</Label>
